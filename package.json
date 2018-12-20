@@ -6,6 +6,11 @@
   "bin": "src/cli.js",
   "repository": "https://github.com/theoperatore/destiny-auth-proxy.git",
   "author": "Alex Petersen <theoperatore@gmail.com>",
+  "keyworkds": [
+    "destiny",
+    "auth",
+    "bungie"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=10.14.2"
