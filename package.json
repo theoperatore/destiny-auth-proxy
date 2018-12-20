@@ -7,9 +7,16 @@
   "repository": "https://github.com/theoperatore/destiny-auth-proxy.git",
   "author": "Alex Petersen <theoperatore@gmail.com>",
   "keywords": [
-    "destiny",
     "auth",
-    "bungie"
+    "oauth2",
+    "destiny",
+    "destiny2",
+    "destinythegame",
+    "destiny2api",
+    "bungie",
+    "bungie-api",
+    "bungie-destiny-api",
+    "bungie-net"
   ],
   "license": "MIT",
   "engines": {
