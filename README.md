@@ -2,7 +2,7 @@
 
 A simple server to help with refreshing tokens so your users can stop having to keep logging into Bungie to get access to your awesome app!
 
-This flow is for those Bungie applications that are using the `Confidential OAuth Client Type`. 
+This flow is for those Bungie applications that are using the `Confidential OAuth Client Type`. See the [Bungie OAuth Documentation](https://github.com/Bungie-net/api/wiki/OAuth-Documentation) for more info.
 
 This simple auth proxy server supports many domains and many clientId/clientSecret pairs; as many separate Bungie applications as you want!
 
@@ -47,6 +47,15 @@ and it'll pick up the correct node version.
 Because Bungie's authorization callback endponts require `https` (they won't let you do `http`), this proxy needs to be run using an ssl certificate.
 
 The best way to specify where you `cert` and `key` are is using the environment variables: `DESTINY_AUTH_PROXY_CERT_PATH` and `DESTINY_AUTH_PROXY_KEY_PATH`. Set those to the **absolute path** of your key and certficate files and the server will pick them up.
+
+The server and cli are set up to use [dotenv](https://github.com/motdotla/dotenv). For easy environment variable configuring, make a `.env` file and put:
+
+```
+DESTINY_AUTH_PROXY_CERT_PATH=Absolute/Path/To/Cert
+DESTINY_AUTH_PROXY_KEY_PATH=Absolute/Path/To/Key
+```
+
+And run your proxy.
 
 #### Developing locally
 
