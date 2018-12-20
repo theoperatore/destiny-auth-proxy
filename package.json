@@ -1,0 +1,84 @@
+{
+  "name": "@theoperatore/destiny-auth-proxy",
+  "version": "0.0.1",
+  "description": "A simple refresh token server for handling Destiny OAuth tokens",
+  "main": "src/server.js",
+  "bin": "src/cli.js",
+  "repository": "https://github.com/theoperatore/destiny-auth-proxy.git",
+  "author": "Alex Petersen <theoperatore@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=10.14.2"
+  },
+  "scripts": {
+    "postinstall": "yarn audit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "commander": "^2.19.0",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-google": "^0.11.0",
+    "husky": "^1.3.0",
+    "prettier": "^1.15.3",
+    "pretty-quick": "^1.8.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 8
+    },
+    "extends": [
+      "eslint:recommended",
+      "google"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "arrow-parens": [
+        2,
+        "as-needed"
+      ],
+      "require-jsdoc": "off",
+      "new-cap": "off",
+      "guard-for-in": "off",
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 120
+        }
+      ]
+    }
+  }
+}
