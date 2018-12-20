@@ -1,12 +1,12 @@
 {
   "name": "@theoperatore/destiny-auth-proxy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A simple refresh token server for handling Destiny OAuth tokens",
   "main": "src/server.js",
   "bin": "src/cli.js",
   "repository": "https://github.com/theoperatore/destiny-auth-proxy.git",
   "author": "Alex Petersen <theoperatore@gmail.com>",
-  "keyworkds": [
+  "keywords": [
     "destiny",
     "auth",
     "bungie"
