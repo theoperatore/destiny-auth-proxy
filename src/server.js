@@ -11,8 +11,6 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const json = require('body-parser').json;
 
-const noop = () => {};
-
 function createServer(authorizedClients, authorizedDomains = []) {
   if (!authorizedClients || Object.keys(authorizedClients).length === 0) {
     throw new Error('AuthorizedClients must have at least one client id/secret pair: { clientId: clientSecret, ... }');
@@ -143,7 +141,7 @@ function createServer(authorizedClients, authorizedDomains = []) {
   });
 
   return {
-    listen(port, cb = noop) {
+    listen(port, cb) {
       const sslOptions = {
         key: fs.readFileSync(path.resolve(process.env.DESTINY_AUTH_PROXY_KEY_PATH)),
         cert: fs.readFileSync(path.resolve(process.env.DESTINY_AUTH_PROXY_CERT_PATH)),

@@ -17,6 +17,15 @@ test('Client pairs are required', () => {
   );
 });
 
+test('It fails when trying from unauthorized domain', done => {
+  const { app } = createServer(authorizedClents, ['http://authorized.com']);
+  supertest(app)
+    .get('/health_check')
+    .set('Origin', 'http://not-gonna-work.com')
+    .expect(500)
+    .end(done);
+});
+
 test('Listening creates a server', done => {
   const app = createServer(authorizedClents);
   const server = app.listen(1337);

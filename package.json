@@ -25,7 +25,7 @@
   "scripts": {
     "postinstall": "yarn audit",
     "lint": "eslint .",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -99,6 +99,10 @@
         {
           "code": 120
         }
+      ],
+      "quote-props": [
+        "error",
+        "as-needed"
       ]
     }
   }
