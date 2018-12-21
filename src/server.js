@@ -35,7 +35,7 @@ function createServer(authorizedClients, authorizedDomains = []) {
   app.use(cookieParser('dap_dc'));
 
   app.get('/health_check', (req, res) => {
-    res.status(204).end();
+    res.sendStatus(204);
   });
 
   app.get('/token', (req, res) => {
@@ -62,70 +62,78 @@ function createServer(authorizedClients, authorizedDomains = []) {
 
     if (dapDC) {
       // try to get a token via refresh
-      request({
-        method: 'POST',
-        uri: 'https://www.bungie.net/platform/app/oauth/token/',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Basic ${authorization}`,
+      request(
+        {
+          method: 'POST',
+          uri: 'https://www.bungie.net/platform/app/oauth/token/',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${authorization}`,
+          },
+          form: {
+            grant_type: 'refresh_token',
+            refresh_token: dapDC,
+          },
         },
-        form: {
-          grant_type: 'refresh_token',
-          refresh_token: dapDC,
+        (error, response, body) => {
+          if (error || response.statusCode !== 200) {
+            res.status(401).send(body);
+            return;
+          }
+
+          const parsed = JSON.parse(body);
+          const cookieOptions = {
+            httpOnly: true,
+            signed: true,
+            secure: true,
+            maxAge: parsed.refresh_expires_in,
+            path: '/',
+            domain: req.hostname,
+          };
+
+          res.cookie('dap_dc', parsed.refresh_token, cookieOptions);
+
+          res.status(200).send({ token: parsed.access_token, membershipId: parsed.membership_id });
         },
-      }, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
-          res.status(401).send(body);
-          return;
-        }
-
-        const parsed = JSON.parse(body);
-        const cookieOptions = {
-          httpOnly: true,
-          signed: true,
-          maxAge: parsed.refresh_expires_in,
-          path: '/',
-          domain: req.hostname,
-        };
-
-        res.cookie('dap_dc', parsed.refresh_token, cookieOptions);
-
-        res.status(200).send({ token: parsed.access_token, membershipId: parsed.membership_id });
-      });
+      );
       return;
     }
 
     if (code) {
       // try to get token via the auth code
-      request({
-        method: 'POST',
-        uri: 'https://www.bungie.net/platform/app/oauth/token/',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Basic ${authorization}`,
+      request(
+        {
+          method: 'POST',
+          uri: 'https://www.bungie.net/platform/app/oauth/token/',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${authorization}`,
+          },
+          form: {
+            grant_type: 'authorization_code',
+            code,
+          },
         },
-        form: {
-          grant_type: 'authorization_code',
-          code,
+        (error, response, body) => {
+          if (error || response.statusCode !== 200) {
+            res.status(401).send(body);
+            return;
+          }
+
+          const parsed = JSON.parse(body);
+          const cookieOptions = {
+            httpOnly: true,
+            signed: true,
+            secure: true,
+            maxAge: parsed.refresh_expires_in,
+            path: '/',
+            domain: req.hostname,
+          };
+
+          res.cookie('dap_dc', parsed.refresh_token, cookieOptions);
+          res.status(200).send({ token: parsed.access_token, membershipId: parsed.membership_id });
         },
-      }, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
-          res.status(401).send(body);
-          return;
-        }
-
-        const parsed = JSON.parse(body);
-        const cookieOptions = {
-          httpOnly: true,
-          signed: true,
-          maxAge: parsed.refresh_expires_in,
-          path: '/',
-          domain: req.hostname,
-        };
-
-        res.cookie('dap_dc', parsed.refresh_token, cookieOptions);
-        res.status(200).send({ token: parsed.access_token, membershipId: parsed.membership_id });
-      });
+      );
       return;
     }
 
@@ -142,6 +150,7 @@ function createServer(authorizedClients, authorizedDomains = []) {
       };
       return https.createServer(sslOptions, app).listen(port, cb);
     },
+    app,
   };
 }
 
