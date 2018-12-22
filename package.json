@@ -1,6 +1,6 @@
 {
   "name": "@theoperatore/destiny-auth-proxy",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A simple refresh token server for handling Destiny OAuth tokens",
   "main": "src/server.js",
   "bin": "src/cli.js",
