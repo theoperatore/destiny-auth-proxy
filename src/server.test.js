@@ -6,6 +6,10 @@ const authorizedClents = {
   abc: '123',
 };
 
+afterEach(() => {
+  require('./utils/logger').silent = true;
+});
+
 afterAll(() => {
   nock.restore();
   nock.cleanAll();
@@ -24,6 +28,12 @@ test('It fails when trying from unauthorized domain', done => {
     .set('Origin', 'http://not-gonna-work.com')
     .expect(500)
     .end(done);
+});
+
+test('Can enable logging to console and files', () => {
+  const app = createServer(authorizedClents, ['http://authorized.com']);
+  expect(app.enableConsoleLogging()).toBe(app);
+  expect(app.enableFileLogging()).toBe(app);
 });
 
 test('Listening creates a server', done => {

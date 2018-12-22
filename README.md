@@ -97,6 +97,11 @@ const authorizedDomains = [
 ];
 
 const app = createServer(authorizedClients, authorizedDomains);
+
+// enable some logging - see below for more info
+app.enableConsoleLogging();
+app.enableFileLogging();
+
 const server = app.listen(port, () => console.log('server up at:', port));
 ```
 
@@ -121,9 +126,11 @@ destiny-auth-proxy --help
 
 ### Logging
 
-Logging is controlled via the `NODE_ENV` environment variable. If `NODE_ENV === 'production'` then the server will log all traffic out to a rotating daily file. These files are kept for 14days before being archived.
+Running the server from the cli will automatically enable file logging. You will have to manually enable file or console logging when using the node api.
 
-If you want to log to the console AND to the production logs, then add a `-v` when running the cli.
+Enabling file logging will cause the server to log all traffic out to a rotating daily file. These files are kept for 14days before being archived.
+
+If you want to log to the console AND to the production logs, then add a `-v` when running the cli or call `app.enableConsoleLogging()`.
 
 ### License
 

@@ -32,10 +32,13 @@ const authorizedClients = program.client.reduce((obj, clientPair) => {
   return Object.assign(obj, pair);
 }, {});
 
+const server = createServer(authorizedClients, program.domain);
+
+server.enableFileLogging();
 if (program.verbose) {
-  log.enableConsoleLogging();
+  server.enableConsoleLogging();
 }
 
-createServer(authorizedClients, program.domain).listen(port, () => {
+server.listen(port, () => {
   log.info(`- ${new Date().toUTCString()} Destiny Auth Proxy listening on: ${port}`);
 });

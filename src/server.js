@@ -146,6 +146,14 @@ function createServer(authorizedClients, authorizedDomains = []) {
   });
 
   return {
+    enableConsoleLogging() {
+      logger.enableConsoleLogging();
+      return this;
+    },
+    enableFileLogging() {
+      logger.enableProductionLogging();
+      return this;
+    },
     listen(port, cb) {
       const sslOptions = {
         key: fs.readFileSync(path.resolve(process.env.DESTINY_AUTH_PROXY_KEY_PATH)),

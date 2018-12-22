@@ -2,11 +2,19 @@ const split = require('split');
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 
+let isProductionLoggingEnabled = false;
+let isConsoleLoggingEnabled = false;
+
 const logger = winston.createLogger({
   exitOnError: false,
+  silent: true,
 });
 
-if (process.env.NODE_ENV === 'production') {
+module.exports = logger;
+
+module.exports.enableProductionLogging = () => {
+  isProductionLoggingEnabled = true;
+  logger.silent = false;
   logger.add(
     new DailyRotateFile({
       filename: 'combined-%DATE%.log',
@@ -17,21 +25,11 @@ if (process.env.NODE_ENV === 'production') {
       maxSize: '20m',
     }),
   );
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
-      level: 'debug',
-      handleExceptions: true,
-    }),
-  );
-}
-
-module.exports = logger;
+};
 
 module.exports.enableConsoleLogging = () => {
+  isConsoleLoggingEnabled = true;
+  logger.silent = false;
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
@@ -41,4 +39,6 @@ module.exports.enableConsoleLogging = () => {
   );
 };
 
+module.exports.isProductionLoggingEnabled = () => isProductionLoggingEnabled;
+module.exports.isConsoleLoggingEnabled = () => isConsoleLoggingEnabled;
 module.exports.stream = split().on('data', msg => logger.info(msg));
