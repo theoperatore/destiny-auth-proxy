@@ -8,19 +8,19 @@ This simple auth proxy server supports many domains and many clientId/clientSecr
 
 ### How it works
 
-When your app starts up try to get a token from the auth proxy: 
+When your app starts up try to get a token from the auth proxy:
 
-```https://<destiny-auth-proxy-domain>/token?clientId=<clientId>```
+`https://<destiny-auth-proxy-domain>/token?clientId=<clientId>`
 
-This will either return an auth token and membership id to use, or it will respond with `401 Unauthorized`. 
+This will either return an auth token and membership id to use, or it will respond with `401 Unauthorized`.
 
 If you are unauthorized, redirect the user to Bungie's authorization endpoint:
 
-```https://www.bungie.net/en/oauth/authorize?client_id=CLIENT_ID&response_type=code```.
+`https://www.bungie.net/en/oauth/authorize?client_id=CLIENT_ID&response_type=code`.
 
 Once you get your code, use that to try to get another token from the auth proxy:
 
-```https://<destiny-auth-proxy-domain>/token?clientId=<clientId>&code=<authCodeFromBungie>```
+`https://<destiny-auth-proxy-domain>/token?clientId=<clientId>&code=<authCodeFromBungie>`
 
 By sending the `authCodeFromBungie` and the `clientId`, the auth proxy can obtain an auth token and `refresh_token` and send them to you. At the same time, the proxy sets a cookie to help with the next time you want to authenticate (without having to redirect to Bungie's authorization endpoint).
 
@@ -30,9 +30,9 @@ Be sure that any `401` from the auth proxy is handled by redirecting to Bungie t
 
 ### Requirements
 
-|engine|version|
-|------|-------|
-|node|`10.14.2`|
+| engine | version   |
+| ------ | --------- |
+| node   | `10.14.2` |
 
 Easiest way to get that version is to use [nvm](https://github.com/creationix/nvm). Once that's installed it's just:
 
@@ -107,7 +107,7 @@ const server = app.listen(port, () => console.log('server up at:', port));
 yarn global add @theoperatore/destiny-auth-proxy
 ```
 
-This will install the `destiny-auth-proxy` executable
+This will install the `destiny-auth-proxy` executable. Using the cli will automatically set `NODE_ENV` to `production` and enable file logging.
 
 #### cli basic usage
 
@@ -121,7 +121,9 @@ destiny-auth-proxy --help
 
 ### Logging
 
-By default, both ways to use the server will output logs to `console.log` and `console.error`. In the future, it'll be likely that [winston]() is used, but for getting started, might as well use use the console :)
+Logging is controlled via the `NODE_ENV` environment variable. If `NODE_ENV === 'production'` then the server will log all traffic out to a rotating daily file. These files are kept for 14days before being archived.
+
+If you want to log to the console AND to the production logs, then add a `-v` when running the cli.
 
 ### License
 
