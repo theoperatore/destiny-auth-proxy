@@ -1,6 +1,6 @@
 {
   "name": "@theoperatore/destiny-auth-proxy",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A simple refresh token server for handling Destiny OAuth tokens",
   "main": "src/server.js",
   "bin": "src/cli.js",
@@ -36,8 +36,11 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "helmet": "^3.15.0",
+    "morgan": "^1.9.1",
     "request": "^2.88.0",
-    "winston": "^3.1.0"
+    "split": "^1.0.1",
+    "winston": "^3.1.0",
+    "winston-daily-rotate-file": "^3.5.1"
   },
   "devDependencies": {
     "eslint": "^5.10.0",

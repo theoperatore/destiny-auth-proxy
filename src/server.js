@@ -10,6 +10,8 @@ const cors = require('cors');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const json = require('body-parser').json;
+const morgan = require('morgan');
+const logger = require('./utils/logger');
 
 function createServer(authorizedClients, authorizedDomains = []) {
   if (!authorizedClients || Object.keys(authorizedClients).length === 0) {
@@ -26,6 +28,9 @@ function createServer(authorizedClients, authorizedDomains = []) {
 
   const app = express();
 
+  const logFormat =
+    ':remote-addr :date[web] :method :url HTTP/:http-version :status :res[content-length] :response-time ms';
+  app.use(morgan(logFormat, { stream: logger.stream }));
   app.use(helmet());
   app.use(cors({ origin, credentials: true }));
   app.use(compression());
